@@ -1,0 +1,69 @@
+`timescale 1ns / 1ps
+
+// inputs , outputs , registers 
+module mealy_1001( clk , rst, inp , out );
+input clk , rst,inp ;
+output reg out;
+// introduction of parameters
+parameter S0 = 2'b00;
+parameter S1 = 2'b01;
+parameter S2 = 2'b10;
+parameter S3 = 2'b11;
+
+reg [1:0]PS , NS;
+//  state transition logic 
+always @ (posedge clk ) begin
+if (rst)
+PS <= S0;
+else 
+PS <= NS;
+end
+// next state logic and output logic
+always @(*) begin
+NS = PS;
+out =0;
+case (PS)
+
+S0:begin
+if (inp)   // 1001 ka banana hai mtlb S1 mei 1 jana chhiye , yani S0 mei 0 rhega aur s1 mei 1;
+NS = S1;  //  combinational logic, use blocking assignment (=).
+else 
+NS = S0; // AS o/p hume 0 hi milega kyuki abhi pura sequence bacha hua hai
+end
+
+S1:begin
+if (inp)
+NS = S1;
+else 
+NS = S2; // abhi tk nhi mila
+end
+
+S2:begin
+if (inp)
+NS = S1;
+else 
+NS = S3;
+end
+
+S3:begin
+
+if (inp) begin
+NS = S1;
+out =1;// aur yaha pe hume final sequence 1001 mil jayega
+end
+
+else begin 
+NS = S0; 
+out =0;
+end
+
+end
+default : begin
+NS = S0;
+out = 0;
+
+end
+
+endcase
+end
+endmodule
