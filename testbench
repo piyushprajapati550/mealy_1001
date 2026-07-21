@@ -1,0 +1,25 @@
+`timescale 1ns / 1ps
+
+module mealy_1001_tb;
+reg clk , rst,inp ;
+wire out;
+// mapping
+ mealy_1001 uut( clk , rst, inp , out );
+ 
+always #5 clk = ~clk;
+
+initial
+begin
+clk =0;rst=1;inp=0;
+#10 ; rst=0;
+#10 ; inp=1;
+#10 ; inp=0;
+#10 ; inp=0;
+#10 ; inp=1;
+#10 ; inp =0;
+#10 ; inp = 1;
+
+#100 $finish;
+end
+endmodule
+
